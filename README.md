@@ -18,7 +18,10 @@ A simple bcrypt hashingservice to show the features of Go:
 ## Usage
 
 `curl localhost:8080/health`
+
 `curl -X POST localhost:8080/hash -d '{"pw":"foobar"}'`
+
 `curl -X POST localhost:8080/verify -d '{"pw":"foobar", "hash":"$2a$14$DewuCqBaOSjOVwQ3bhBsnORYdZUeXQ5i00D5b9l1NYgd1ND6zisq2"}'`
+
 
 
