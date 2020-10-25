@@ -1,6 +1,6 @@
 # HashService
 
-A simple bcrypt hashingservice to show the features of Go:
+A simple bcrypt hashingservice to show the features of plain Go:
 
 - testing
 - http(s)
