@@ -32,7 +32,7 @@ func hash(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ reading hash request: %s", reqid, err)
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error reading request", http.StatusBadRequest)
 			return
 		}
 		defer r.Body.Close()
@@ -42,7 +42,7 @@ func hash(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ decoding hash request: %s", reqid, err)
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error decoding request", http.StatusBadRequest)
 			return
 		}
 
@@ -50,7 +50,7 @@ func hash(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ hashing request: %s", reqid, err)
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error creating a hash", http.StatusBadRequest)
 			return
 		}
 
@@ -62,7 +62,7 @@ func hash(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ responding to hashing request: %s", reqid, err)
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error creating a hash-response", http.StatusBadRequest)
 			return
 		}
 	})
@@ -79,7 +79,7 @@ func verify(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ reading verify request: %s", reqid, err)
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error reading request", http.StatusBadRequest)
 			return
 		}
 		defer r.Body.Close()
@@ -89,8 +89,7 @@ func verify(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ decoding verify request: %s", reqid, err)
-
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error decoding request", http.StatusBadRequest)
 			return
 		}
 
@@ -103,8 +102,7 @@ func verify(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ verify request: %s", reqid, err)
-
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error verifying a hash", http.StatusBadRequest)
 			return
 		}
 
@@ -125,7 +123,7 @@ func verify(hs hashservice) http.Handler {
 		if err != nil {
 			reqid := r.Context().Value("reqid")
 			log.Printf("[%s] Error @ responding to verify request: %s", reqid, err)
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Error creating a verify-response", http.StatusBadRequest)
 			return
 		}
 	})
