@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -24,14 +25,14 @@ type bcrypthashservice struct {
 func (hs *bcrypthashservice) Hash(ctx context.Context, pw string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(pw), 14)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error creating a bcrypt hash: %w", err)
 	}
 
 	hash := string(bytes)
 
 	err = hs.store.Set(ctx, hash)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error storing a bcrypt hash: %w", err)
 	}
 
 	return hash, err
@@ -41,12 +42,12 @@ func (hs *bcrypthashservice) Hash(ctx context.Context, pw string) (string, error
 func (hs *bcrypthashservice) Verify(ctx context.Context, pw, hash string) (bool, bool, error) {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pw))
 	if err != nil {
-		return false, false, err
+		return false, false, fmt.Errorf("error verifying a bcrypt hash: %w", err)
 	}
 
 	exists, err := hs.store.Exists(ctx, hash)
 	if err != nil {
-		return true, false, err
+		return true, false, fmt.Errorf("error checking is bcrypt hash exists: %w", err)
 	}
 
 	if exists {
